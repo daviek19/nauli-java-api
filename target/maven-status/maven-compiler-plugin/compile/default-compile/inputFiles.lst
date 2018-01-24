@@ -1,4 +1,11 @@
 C:\workspace\spring-mysql\nauli\src\main\java\rest\repositories\UserRepository.java
+C:\workspace\spring-mysql\nauli\src\main\java\rest\config\WebSecurityConfiguration.java
 C:\workspace\spring-mysql\nauli\src\main\java\rest\controllers\MainController.java
+C:\workspace\spring-mysql\nauli\src\main\java\rest\repositories\AccountRepository.java
 C:\workspace\spring-mysql\nauli\src\main\java\rest\models\User.java
+C:\workspace\spring-mysql\nauli\src\main\java\rest\controllers\MerchantController.java
+C:\workspace\spring-mysql\nauli\src\main\java\rest\repositories\MerchantRepository.java
+C:\workspace\spring-mysql\nauli\src\main\java\rest\config\WebSecurityConfig.java
+C:\workspace\spring-mysql\nauli\src\main\java\rest\models\Account.java
+C:\workspace\spring-mysql\nauli\src\main\java\rest\models\Merchant.java
 C:\workspace\spring-mysql\nauli\src\main\java\rest\Application.java
