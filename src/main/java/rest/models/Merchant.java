@@ -1,5 +1,6 @@
 package rest.models;
 
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,8 @@ public class Merchant {
     private String address;
     private String location;
     private String website;
+    private Date dateCreated;
+    private Long merchantId;
 
     /**
      * @return the id
