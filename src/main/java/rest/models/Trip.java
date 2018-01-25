@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -22,7 +25,7 @@ public class Trip {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Integer id;
+    private Integer tripId;
     private String tripReference;
     private String tripFrom;
     private String tripTo;
@@ -37,6 +40,23 @@ public class Trip {
     @ManyToOne()
     @JoinColumn(name = "deviceId", nullable = false)
     private Device device;
+
+    @OneToMany(mappedBy = "trip")
+    private Set<Payment> payments = new HashSet<>();
+
+    /**
+     * @return the payments
+     */
+    public Set<Payment> getPayments() {
+        return payments;
+    }
+
+    /**
+     * @param payments the payments to set
+     */
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;
+    }
 
     /**
      * @return the device
@@ -53,17 +73,17 @@ public class Trip {
     }
 
     /**
-     * @return the id
+     * @return the tripId
      */
     public Integer getId() {
-        return id;
+        return tripId;
     }
 
     /**
-     * @param id the id to set
+     * @param tripId the id to set
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Integer tripId) {
+        this.tripId = tripId;
     }
 
     /**
