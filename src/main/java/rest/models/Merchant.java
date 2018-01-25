@@ -1,8 +1,11 @@
 package rest.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,30 +15,29 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Refer to the documentation at this point
+ * https://www.callicoder.com/hibernate-spring-boot-jpa-one-to-many-mapping-example/
+ */
 @Entity
 public class Merchant {
 
-    /**
-     * Refer to the documentation at this point
-     * https://www.callicoder.com/hibernate-spring-boot-jpa-one-to-many-mapping-example/
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer id;
-
     private String name;
-
     private String email;
-
     private String phoneNumber;
-
     private String address;
-
     private String location;
-
     private String website;
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long merchantId;
+
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID conversationId;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -43,6 +45,20 @@ public class Merchant {
 
     @OneToMany(mappedBy = "merchant")
     private Set<Device> devices = new HashSet<>();
+
+    /**
+     * @return the conversationId
+     */
+    public UUID getConversationId() {
+        return conversationId;
+    }
+
+    /**
+     * @param conversationId the conversationId to set
+     */
+    public void setConversationId(UUID conversationId) {
+        this.conversationId = conversationId;
+    }
 
     /**
      * @return the devices
