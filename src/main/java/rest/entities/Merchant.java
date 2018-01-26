@@ -1,4 +1,4 @@
-package rest.models;
+package rest.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -14,10 +14,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Refer to the documentation at this point
  * https://www.callicoder.com/hibernate-spring-boot-jpa-one-to-many-mapping-example/
+ * 
+ * Validation
+ * http://www.springboottutorial.com/spring-boot-validation-for-rest-services
  */
 @Entity
 public class Merchant {
@@ -25,16 +29,16 @@ public class Merchant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Integer id;
+    private Integer merchantId;
+
+    @NotNull(message = "The merchant name cannot be empty")
+    @Size(min = 1, max = 3, message = "Invalid merchant name.")
     private String name;
     private String email;
     private String phoneNumber;
     private String address;
     private String location;
     private String website;
-
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long merchantId;
 
     @Column(columnDefinition = "BINARY(16)")
     private UUID conversationId;
@@ -91,29 +95,15 @@ public class Merchant {
     /**
      * @return the merchantId
      */
-    public Long getMerchantId() {
+    public Integer getMerchantId() {
         return merchantId;
     }
 
     /**
      * @param merchantId the merchantId to set
      */
-    public void setMerchantId(Long merchantId) {
+    public void setMerchantId(Integer merchantId) {
         this.merchantId = merchantId;
-    }
-
-    /**
-     * @return the id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     /**

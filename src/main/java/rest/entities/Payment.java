@@ -1,4 +1,4 @@
-package rest.models;
+package rest.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
@@ -19,7 +19,7 @@ public class Payment {
     private BigDecimal transAmount;
     private Long msisdn;
     @ManyToOne()
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "trip_id", nullable = false)
     private Trip trip;
 
     /**

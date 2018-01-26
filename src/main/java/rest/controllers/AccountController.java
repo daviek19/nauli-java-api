@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import rest.models.Account;
+import rest.entities.Account;
 import rest.repositories.AccountRepository;
 import rest.utils.ApiResponse;
 

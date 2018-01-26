@@ -1,4 +1,4 @@
-package rest.models;
+package rest.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
@@ -23,8 +23,7 @@ public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Integer id;
-    private Long deviceId;
+    private Integer deviceId;
     private String pin;
 
     @NotNull
@@ -32,7 +31,7 @@ public class Device {
     private Date dateCreated = new Date();
     private Boolean isActive;
 
-    @ManyToOne()    
+    @ManyToOne()
     @JoinColumn(name = "merchantId", nullable = false)
     private Merchant merchant;
 
@@ -85,30 +84,16 @@ public class Device {
     }
 
     /**
-     * @return the id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
      * @return the deviceId
      */
-    public Long getDeviceId() {
+    public Integer getDeviceId() {
         return deviceId;
     }
 
     /**
      * @param deviceId the deviceId to set
      */
-    public void setDeviceId(Long deviceId) {
+    public void setDeviceId(Integer deviceId) {
         this.deviceId = deviceId;
     }
 
