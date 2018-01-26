@@ -6,37 +6,41 @@ import java.util.List;
 public class ErrorDetails {
 
     private Date timestamp;
-    private String message;
-    private String details;
-    private List<String> errors;
+    private String errorCode;
+    private List<String> errorMessages;
 
-    public ErrorDetails(Date timestamp, String message, String details) {
+    public ErrorDetails(Date timestamp, String message, String error) {
         super();
         this.timestamp = timestamp;
-        this.message = message;
-        this.details = details;
+        this.errorCode = message;
     }
 
     public ErrorDetails(Date timestamp, String message, List<String> errors) {
         super();
         this.timestamp = timestamp;
-        this.message = message;
-        this.errors = errors;
+        this.errorCode = message;
+        this.errorMessages = errors;
     }
 
-    public List<String> getErrors() {
-        return errors;
-    }
-
+    /**
+     * @return the timestamp
+     */
     public Date getTimestamp() {
         return timestamp;
     }
 
-    public String getMessage() {
-        return message;
+    /**
+     * @return the errorCode
+     */
+    public String getErrorCode() {
+        return errorCode;
     }
 
-    public String getDetails() {
-        return details;
+    /**
+     * @return the errorMessages
+     */
+    public List<String> getErrorMessages() {
+        return errorMessages;
     }
+
 }

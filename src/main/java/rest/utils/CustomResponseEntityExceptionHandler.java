@@ -62,18 +62,18 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
         return new ResponseEntity(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        Throwable mostSpecificCause = ex.getMostSpecificCause();
-        ErrorMessage errorMessage;
-        if (mostSpecificCause != null) {
-            String exceptionName = mostSpecificCause.getClass().getName();
-            String message = mostSpecificCause.getMessage();
-            errorMessage = new ErrorMessage(exceptionName, message);
-        } else {
-            errorMessage = new ErrorMessage(ex.getMessage());
-        }
-        return new ResponseEntity(errorMessage, headers, status);
-    }
+//    @Override
+//    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+//        Throwable mostSpecificCause = ex.getMostSpecificCause();
+//        ErrorMessage errorMessage;
+//        if (mostSpecificCause != null) {
+//            String exceptionName = mostSpecificCause.getClass().getName();
+//            String message = mostSpecificCause.getMessage();
+//            errorMessage = new ErrorMessage(exceptionName, message);
+//        } else {
+//            errorMessage = new ErrorMessage(ex.getMessage());
+//        }
+//        return new ResponseEntity(errorMessage, headers, status);
+//    }
 
 }
