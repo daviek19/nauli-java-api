@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 /**
  * Refer to the documentation at this point
  * https://www.callicoder.com/hibernate-spring-boot-jpa-one-to-many-mapping-example/
- * 
+ *
  * Validation
  * http://www.springboottutorial.com/spring-boot-validation-for-rest-services
  */
@@ -34,6 +34,8 @@ public class Merchant {
     @NotNull(message = "The merchant name cannot be empty")
     @Size(min = 1, max = 3, message = "Invalid merchant name.")
     private String name;
+
+    @NotNull(message = "The email cannot be empty")
     private String email;
     private String phoneNumber;
     private String address;
