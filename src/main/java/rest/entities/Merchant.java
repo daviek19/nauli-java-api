@@ -1,6 +1,7 @@
 package rest.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,33 +14,36 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.Email;
 
-/**
- * Refer to the documentation at this point
- * https://www.callicoder.com/hibernate-spring-boot-jpa-one-to-many-mapping-example/
- *
- * Validation
- * http://www.springboottutorial.com/spring-boot-validation-for-rest-services
- */
 @Entity
-public class Merchant {
+public class Merchant implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer merchantId;
 
-    @NotNull(message = "The merchant name cannot be empty")
-    @Size(min = 1, max = 3, message = "Invalid merchant name.")
+    @NotNull(message = "The merchant name cannot be empty.")
+    @Size(min = 2, message = "Merchant name is too short.")
     private String name;
 
-    @NotNull(message = "The email cannot be empty")
+    @Email
+    @NotNull(message = "Invalid email.")
+    @Column(unique = true)
     private String email;
+
+    @Column(unique = true)
+    @NotNull(message = "Invalid phone number.")
     private String phoneNumber;
+
     private String address;
+
     private String location;
+
     private String website;
 
     @Column(columnDefinition = "BINARY(16)")
