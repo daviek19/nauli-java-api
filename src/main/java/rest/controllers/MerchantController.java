@@ -1,5 +1,6 @@
 package rest.controllers;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -99,9 +100,20 @@ public class MerchantController {
                     .send(HttpStatus.NOT_FOUND, "Merchant not found");
         }
 
-        Merchant updatedMerchant = merchantRepository.save(merchant);
+        //overide old details
+        foundMerchant.setAddress(merchant.getAddress());
+        foundMerchant.setEmail(merchant.getEmail());
+        foundMerchant.setName(merchant.getName());
+        foundMerchant.setWebsite(merchant.getWebsite());
+        foundMerchant.setPhoneNumber(merchant.getPhoneNumber());
 
-        return new ApiResponse(updatedMerchant).send(HttpStatus.OK);
+        Merchant updatedMerchant = merchantRepository.save(foundMerchant);
+
+        HashMap<String, String> response = new HashMap<>();
+        response.put("conversationId", updatedMerchant.getConversationId().toString());
+        response.put("timestamp", new Date().toString());
+
+        return new ApiResponse(response).send(HttpStatus.OK);
     }
 
 }
