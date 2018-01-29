@@ -8,5 +8,5 @@ import rest.entities.Merchant;
 
 public interface MerchantRepository extends CrudRepository<Merchant, Integer> {
 
-    Merchant findByConversationId(UUID converstaionId);
+    public Merchant findByConversationId(UUID converstaionId);
 }

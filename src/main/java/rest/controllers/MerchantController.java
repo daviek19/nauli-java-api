@@ -34,8 +34,9 @@ public class MerchantController {
 
     @GetMapping("/")
     public @ResponseBody
-    Iterable<Merchant> getAllMerchants() {
-        return merchantRepository.findAll();
+    ResponseEntity<ApiResponse> getAllMerchants() {
+        Iterable<Merchant> merchants = merchantRepository.findAll();
+        return new ApiResponse(merchants).send(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
