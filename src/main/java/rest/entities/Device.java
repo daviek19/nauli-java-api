@@ -1,6 +1,7 @@
 package rest.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,21 +17,31 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
-public class Device {
+public class Device implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer deviceId;
+
+    @NotNull(message = "The device pin cannot be empty.")
+    @Size(min = 2, message = "The device pin needs to be atleast 4 charactesr.")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pin;
+
+    @NotNull(message = "The device name is required.")
+    private String deviceName;
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated = new Date();
-    private Boolean isActive;
 
+    private Boolean isActive = Boolean.FALSE;
+
+    @NotNull(message = "Merchant id is required")
     @ManyToOne()
     @JoinColumn(name = "merchantId", nullable = false)
     private Merchant merchant;
@@ -40,6 +51,20 @@ public class Device {
 
     @OneToMany(mappedBy = "device")
     private Set<Trip> trips = new HashSet<>();
+
+    /**
+     * @return the deviceName
+     */
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    /**
+     * @param deviceName the deviceName to set
+     */
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
 
     /**
      * @return the trips

@@ -22,7 +22,7 @@ import rest.repositories.DeviceRepository;
 import rest.utils.ApiResponse;
 
 @Controller
-@RequestMapping(path = "api/device",
+@RequestMapping(path = "api/devices",
         headers = "Accept=application/json",
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class DeviceController {
@@ -31,9 +31,9 @@ public class DeviceController {
     private DeviceRepository deviceRepository;
 
     @GetMapping("/")
-    public @ResponseBody
-    Iterable<Device> getAllDevices() {
-        return deviceRepository.findAll();
+    public ResponseEntity<ApiResponse> getAllDevices() {
+        Iterable<Device> devices = deviceRepository.findAll();
+        return new ApiResponse(devices).send(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -68,8 +68,7 @@ public class DeviceController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ApiResponse> createDevice(
-            @Valid @RequestBody Device device) {
+    public ResponseEntity<ApiResponse> createDevice(@Valid @RequestBody Device device) {
 
         device.setConversationId(UUID.randomUUID());
         deviceRepository.save(device);
@@ -82,7 +81,7 @@ public class DeviceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateMerchant(
+    public ResponseEntity<ApiResponse> updateDevice(
             @PathVariable(value = "id") UUID conversationId,
             @Valid @RequestBody Device device
     ) {
