@@ -1,5 +1,6 @@
 package rest.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
@@ -53,6 +53,7 @@ public class Merchant implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated = new Date();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "merchant")
     private Set<Device> devices = new HashSet<>();
 
