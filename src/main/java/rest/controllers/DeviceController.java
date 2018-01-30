@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import rest.entities.Device;
 import rest.repositories.DeviceRepository;
@@ -106,5 +107,27 @@ public class DeviceController {
         response.put("timestamp", new Date().toString());
 
         return new ApiResponse(response).send(HttpStatus.OK);
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<ApiResponse> authenticate(@RequestBody Device device) {
+
+        if (device.getDeviceName().isEmpty()) {
+            return new ApiResponse().send(HttpStatus.BAD_REQUEST, "Empty device name");
+        }
+
+        if (device.getPin().isEmpty()) {
+            return new ApiResponse().send(HttpStatus.BAD_REQUEST, "Empty device pin");
+        }
+
+        Device foundDevice = deviceRepository.findByDeviceNameAndPin(device.getDeviceName(),
+                device.getPin());
+
+        if (foundDevice == null) {
+            return new ApiResponse()
+                    .send(HttpStatus.NOT_FOUND, "Device not found");
+        }
+
+        return new ApiResponse(foundDevice).send(HttpStatus.OK);
     }
 }

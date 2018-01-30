@@ -8,4 +8,6 @@ public interface DeviceRepository extends CrudRepository<Device, Integer> {
 
     public Device findByConversationId(UUID conversationId);
 
+    public Device findByDeviceNameAndPin(String deviceName, String devicePin);
+
 }
