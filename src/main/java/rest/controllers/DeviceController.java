@@ -130,4 +130,9 @@ public class DeviceController {
 
         return new ApiResponse(foundDevice).send(HttpStatus.OK);
     }
+
+    @GetMapping("/{id}/trips")
+    public ResponseEntity<ApiResponse> getAllTrips(@PathVariable(value = "id") UUID conversationId) {
+        return null;
+    }
 }
