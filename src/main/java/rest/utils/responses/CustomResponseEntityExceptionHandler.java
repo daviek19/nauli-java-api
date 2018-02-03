@@ -1,4 +1,4 @@
-package rest.utils;
+package rest.utils.responses;
 
 import java.util.ArrayList;
 import java.util.Date;

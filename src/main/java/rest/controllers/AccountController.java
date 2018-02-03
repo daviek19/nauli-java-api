@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import rest.entities.Account;
 import rest.repositories.AccountRepository;
-import rest.utils.ApiResponse;
+import rest.utils.responses.ErrorResponse;
+import rest.utils.responses.CustomResponse;
 
 @Controller
 @RequestMapping(path = "/account")
@@ -24,22 +25,22 @@ public class AccountController {
             value = "/create",
             headers = "Accept=application/json",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse> createAccount(@RequestBody Account account) {
+    public ResponseEntity<CustomResponse> createAccount(@RequestBody Account account) {
 
         if (account == null) {
-            return new ApiResponse().send(HttpStatus.BAD_REQUEST, "Empty obj");
+            return new ErrorResponse().send(HttpStatus.BAD_REQUEST, "Empty obj");
         }
 
         if (account.getUsername().isEmpty()) {
-            return new ApiResponse().send(HttpStatus.BAD_REQUEST, "Empty user name");
+            return new ErrorResponse().send(HttpStatus.BAD_REQUEST, "Empty user name");
         }
 
         if (account.getPassword().isEmpty()) {
-            return new ApiResponse().send(HttpStatus.BAD_REQUEST, "Empty user password");
+            return new ErrorResponse().send(HttpStatus.BAD_REQUEST, "Empty user password");
         }
 
         accountRepository.save(account);
-        return new ApiResponse(account).send(HttpStatus.OK);
+        return new ErrorResponse(account).send(HttpStatus.OK);
     }
 
 }

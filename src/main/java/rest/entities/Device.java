@@ -1,5 +1,6 @@
 package rest.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
@@ -33,6 +34,7 @@ public class Device implements Serializable {
     private String pin;
 
     @NotNull(message = "The device name is required.")
+    @Column(unique = true)
     private String deviceName;
 
     @NotNull
@@ -49,6 +51,7 @@ public class Device implements Serializable {
     @Column(columnDefinition = "BINARY(16)")
     private UUID conversationId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "device")
     private Set<Trip> trips = new HashSet<>();
 

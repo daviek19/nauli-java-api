@@ -1,8 +1,8 @@
 package rest.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,21 +18,34 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
-public class Trip {
+public class Trip implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer tripId;
+
     private String tripReference;
+
+    @NotNull(message = "Trip from is required.")
+    @Size(min = 2, message = "The trip needs to be atleast 2 characters.")
     private String tripFrom;
+
+    @NotNull(message = "Trip to is required.")
+    @Size(min = 2, message = "The trip to needs to be atleast 2 characters.")
     private String tripTo;
+
+    @NotNull(message = "Fare amount is required. Format 0.00")
     private BigDecimal fareAmount;
+
     private int tripStatus;
+
     @Column(columnDefinition = "BINARY(16)")
     private UUID conversationId;
+
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated = new Date();
@@ -43,6 +56,20 @@ public class Trip {
 
     @OneToMany(mappedBy = "trip")
     private Set<Payment> payments = new HashSet<>();
+
+    /**
+     * @return the tripId
+     */
+    public Integer getTripId() {
+        return tripId;
+    }
+
+    /**
+     * @param tripId the tripId to set
+     */
+    public void setTripId(Integer tripId) {
+        this.tripId = tripId;
+    }
 
     /**
      * @return the payments
@@ -70,20 +97,6 @@ public class Trip {
      */
     public void setDevice(Device device) {
         this.device = device;
-    }
-
-    /**
-     * @return the tripId
-     */
-    public Integer getId() {
-        return tripId;
-    }
-
-    /**
-     * @param tripId the id to set
-     */
-    public void setId(Integer tripId) {
-        this.tripId = tripId;
     }
 
     /**

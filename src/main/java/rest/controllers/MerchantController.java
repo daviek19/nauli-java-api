@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import rest.repositories.MerchantRepository;
 
 import rest.entities.Merchant;
-import rest.utils.ApiResponse;
+import rest.utils.responses.ErrorResponse;
+import rest.utils.responses.CustomResponse;
+import rest.utils.responses.SuccessResponse;
 
 @Controller
 @RequestMapping(path = "api/merchants",
@@ -34,13 +35,13 @@ public class MerchantController {
 
     @GetMapping("/")
     public @ResponseBody
-    ResponseEntity<ApiResponse> getAllMerchants() {
+    ResponseEntity<CustomResponse> getAllMerchants() {
         Iterable<Merchant> merchants = merchantRepository.findAll();
-        return new ApiResponse(merchants).send(HttpStatus.OK);
+        return new SuccessResponse(merchants).send(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse> getMerchant(
+    public ResponseEntity<CustomResponse> getMerchant(
             @PathVariable(value = "id") UUID conversationId) {
 
         Merchant merchant = merchantRepository.findByConversationId(conversationId);
@@ -48,15 +49,15 @@ public class MerchantController {
         if (merchant == null) {
             HashMap<String, String> response = new HashMap<>();
             response.put("conversationId", conversationId.toString());
-            return new ApiResponse(response)
+            return new ErrorResponse(response)
                     .send(HttpStatus.NOT_FOUND, "Merchant not found");
         }
 
-        return new ApiResponse(merchant).send(HttpStatus.OK);
+        return new SuccessResponse(merchant).send(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteMerchant(
+    public ResponseEntity<CustomResponse> deleteMerchant(
             @PathVariable(value = "id") UUID conversationId) {
 
         Merchant merchant = merchantRepository.findByConversationId(conversationId);
@@ -64,16 +65,16 @@ public class MerchantController {
         if (merchant == null) {
             HashMap<String, String> response = new HashMap<>();
             response.put("conversationId", conversationId.toString());
-            return new ApiResponse(response)
+            return new ErrorResponse(response)
                     .send(HttpStatus.NOT_FOUND, "Merchant not found");
         }
 
         merchantRepository.delete(merchant);
-        return new ApiResponse().send(HttpStatus.OK);
+        return new SuccessResponse().send(HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<ApiResponse> createMerchant(
+    public ResponseEntity<CustomResponse> createMerchant(
             @Valid @RequestBody Merchant merchant) {
 
         merchant.setConversationId(UUID.randomUUID());
@@ -83,11 +84,11 @@ public class MerchantController {
         response.put("conversationId", merchant.getConversationId().toString());
         response.put("timestamp", merchant.getDateCreated().toString());
 
-        return new ApiResponse(response).send(HttpStatus.OK);
+        return new SuccessResponse(response).send(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse> updateMerchant(
+    public ResponseEntity<CustomResponse> updateMerchant(
             @PathVariable(value = "id") UUID conversationId,
             @Valid @RequestBody Merchant merchant
     ) {
@@ -97,7 +98,7 @@ public class MerchantController {
         if (foundMerchant == null) {
             HashMap<String, String> response = new HashMap<>();
             response.put("conversationId", conversationId.toString());
-            return new ApiResponse(response)
+            return new ErrorResponse(response)
                     .send(HttpStatus.NOT_FOUND, "Merchant not found");
         }
 
@@ -114,7 +115,7 @@ public class MerchantController {
         response.put("conversationId", updatedMerchant.getConversationId().toString());
         response.put("timestamp", new Date().toString());
 
-        return new ApiResponse(response).send(HttpStatus.OK);
+        return new SuccessResponse(response).send(HttpStatus.OK);
     }
 
 }
