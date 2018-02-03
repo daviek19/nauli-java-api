@@ -158,6 +158,7 @@ public class DeviceController {
 
         trip.setConversationId(UUID.randomUUID());
         trip.setTripReference(RandomStringUtils.random(6, true, true).toUpperCase());
+        trip.setTripStatus(0);
         trip.setDevice(device);
         tripRepository.save(trip);
 

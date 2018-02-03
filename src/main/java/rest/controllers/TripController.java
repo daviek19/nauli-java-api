@@ -107,7 +107,19 @@ public class TripController {
                     .send(HttpStatus.NOT_FOUND, "Trip not found");
         }
 
-        //overide old details
+        //Dont start trip when we have another ongoing one.
+        Iterable<Trip> onGoingTrips = tripRepository
+                .findByTripStatusAndDeviceId(1, foundTrip.getDevice().getDeviceId());
+
+        String ongoingError = "This trip could not be started. "
+                + "Stop any ongoing trip first.";
+
+        if (onGoingTrips != null) {
+            return new ErrorResponse()
+                    .send(HttpStatus.BAD_REQUEST, ongoingError);
+        }
+
+        //Save the details
         foundTrip.setTripStatus(1);
         Trip updatedTrip = tripRepository.save(foundTrip);
 
@@ -116,7 +128,6 @@ public class TripController {
         response.put("timestamp", new Date().toString());
 
         return new SuccessResponse(response).send(HttpStatus.OK);
-
     }
 
     @PostMapping("/{id}/stop")
@@ -140,4 +151,5 @@ public class TripController {
 
         return new SuccessResponse(response).send(HttpStatus.OK);
     }
+
 }

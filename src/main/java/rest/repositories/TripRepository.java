@@ -8,4 +8,6 @@ public interface TripRepository extends CrudRepository<Trip, Integer> {
 
     public Trip findByConversationId(UUID tripId);
 
+    public Iterable<Trip> findByTripStatusAndDeviceId(Integer status, Integer deviceId);
+
 }
