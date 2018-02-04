@@ -2,12 +2,13 @@ package rest.repositories;
 
 import java.util.UUID;
 import org.springframework.data.repository.CrudRepository;
+import rest.entities.Device;
 import rest.entities.Trip;
 
 public interface TripRepository extends CrudRepository<Trip, Integer> {
 
     public Trip findByConversationId(UUID tripId);
 
-    public Iterable<Trip> findByTripStatusAndDeviceId(Integer status, Integer deviceId);
+    public Iterable<Trip> findByTripStatusAndDevice(Integer status, Device device);
 
 }

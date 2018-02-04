@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 import javax.validation.Valid;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import rest.entities.Merchant;
 import rest.entities.Trip;
 import rest.repositories.TripRepository;
 import rest.utils.responses.CustomResponse;
@@ -108,8 +106,10 @@ public class TripController {
         }
 
         //Dont start trip when we have another ongoing one.
+        Integer deviceId = foundTrip.getDevice().getDeviceId();
+
         Iterable<Trip> onGoingTrips = tripRepository
-                .findByTripStatusAndDeviceId(1, foundTrip.getDevice().getDeviceId());
+                .findByTripStatusAndDevice(1, foundTrip.getDevice());
 
         String ongoingError = "This trip could not be started. "
                 + "Stop any ongoing trip first.";
