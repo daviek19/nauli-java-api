@@ -169,7 +169,7 @@ public class DeviceController {
         return new SuccessResponse(response).send(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/trips", method = RequestMethod.GET)
+    @GetMapping("/{id}/trips")
     public ResponseEntity<CustomResponse> getAllDeviceTrips(@PathVariable(value = "id") UUID conversationId) {
         Device device = deviceRepository.findByConversationId(conversationId);
 
@@ -181,5 +181,19 @@ public class DeviceController {
         }
 
         return new SuccessResponse(device.getTrips()).send(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/latest-trips")
+    public ResponseEntity<CustomResponse> getAllLatestDeviceTrips(@PathVariable(value = "id") UUID conversationId) {
+        Device device = deviceRepository.findByConversationId(conversationId);
+
+        if (device == null) {
+            HashMap<String, String> response = new HashMap<>();
+            response.put("conversationId", conversationId.toString());
+            return new ErrorResponse(response)
+                    .send(HttpStatus.NOT_FOUND, "Device not found");
+        }
+        Iterable<Trip> latestTrips = tripRepository.findFirst5ByDeviceOrderByDateCreatedDesc(device);
+        return new SuccessResponse(latestTrips).send(HttpStatus.OK);
     }
 }

@@ -105,9 +105,7 @@ public class TripController {
                     .send(HttpStatus.NOT_FOUND, "Trip not found");
         }
 
-        //Dont start trip when we have another ongoing one.
-        Integer deviceId = foundTrip.getDevice().getDeviceId();
-
+        //Dont start trip when we have another ongoing one.       
         Iterable<Trip> onGoingTrips = tripRepository
                 .findByTripStatusAndDevice(1, foundTrip.getDevice());
 
