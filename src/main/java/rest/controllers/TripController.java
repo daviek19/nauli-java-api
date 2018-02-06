@@ -3,6 +3,7 @@ package rest.controllers;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,8 @@ public class TripController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomResponse> getSingleTrip(@PathVariable(value = "id") UUID tripId) {
+    public ResponseEntity<CustomResponse> getSingleTrip(
+            @PathVariable(value = "id") UUID tripId) {
         Trip trip = tripRepository.findByConversationId(tripId);
         if (trip == null) {
             HashMap<String, String> response = new HashMap<>();
@@ -94,7 +96,8 @@ public class TripController {
     }
 
     @PostMapping("/{id}/start")
-    public ResponseEntity<CustomResponse> startTrip(@PathVariable(value = "id") UUID conversationId) {
+    public ResponseEntity<CustomResponse> startTrip(
+            @PathVariable(value = "id") UUID conversationId) {
 
         Trip foundTrip = tripRepository.findByConversationId(conversationId);
 
@@ -105,17 +108,21 @@ public class TripController {
                     .send(HttpStatus.NOT_FOUND, "Trip not found");
         }
 
-        //Dont start trip when we have another ongoing one.       
-        Iterable<Trip> onGoingTrips = tripRepository
-                .findByTripStatusAndDevice(1, foundTrip.getDevice());
-
-        String ongoingError = "This trip could not be started. "
-                + "Stop any ongoing trip first.";
-
-        if (onGoingTrips != null) {
-            return new ErrorResponse()
-                    .send(HttpStatus.BAD_REQUEST, ongoingError);
-        }
+        //ToDo Dont start trip when we have another ongoing one.       
+//        Iterable<Trip> onGoingTrips = tripRepository
+//                .findByTripStatusAndDevice(1, foundTrip.getDevice());
+//
+//        String ongoingError = "This trip could not be started. "
+//                + "Stop any ongoing trip first.";
+//        
+//        long ongoingTripsCount =  StreamSupport
+//                .stream(onGoingTrips.spliterator(), false)
+//                .count();
+//
+//        if (ongoingTripsCount >= 1) {
+//            return new ErrorResponse()
+//                    .send(HttpStatus.BAD_REQUEST, ongoingError);
+//        }
 
         //Save the details
         foundTrip.setTripStatus(1);
@@ -123,13 +130,15 @@ public class TripController {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("conversationId", updatedTrip.getConversationId().toString());
+        response.put("tripReference",updatedTrip.getTripReference());
         response.put("timestamp", new Date().toString());
 
         return new SuccessResponse(response).send(HttpStatus.OK);
     }
 
     @PostMapping("/{id}/stop")
-    public ResponseEntity<CustomResponse> stopTrip(@PathVariable(value = "id") UUID conversationId) {
+    public ResponseEntity<CustomResponse> stopTrip(
+            @PathVariable(value = "id") UUID conversationId) {
         Trip foundTrip = tripRepository.findByConversationId(conversationId);
 
         if (foundTrip == null) {
@@ -145,6 +154,7 @@ public class TripController {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("conversationId", updatedTrip.getConversationId().toString());
+        response.put("tripReference",updatedTrip.getTripReference());
         response.put("timestamp", new Date().toString());
 
         return new SuccessResponse(response).send(HttpStatus.OK);

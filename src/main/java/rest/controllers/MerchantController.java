@@ -118,4 +118,22 @@ public class MerchantController {
         return new SuccessResponse(response).send(HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/devices")
+    public ResponseEntity<CustomResponse> getDevices(
+            @PathVariable(value = "id") UUID conversationId) {
+        Merchant merchant = merchantRepository.findByConversationId(conversationId);
+
+        if (merchant == null) {
+            HashMap<String, String> response = new HashMap<>();
+            response.put("conversationId", conversationId.toString());
+            return new ErrorResponse(response)
+                    .send(HttpStatus.NOT_FOUND, "Merchant not found");
+        }
+            return new SuccessResponse(merchant.getDevices()).send(HttpStatus.OK);
+    }
+    
+    @PostMapping("/{id}/devices")
+     public ResponseEntity<CustomResponse> createDevice(){
+         throw new UnsupportedOperationException("Not supported yet.");
+     }
 }
