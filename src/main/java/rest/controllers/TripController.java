@@ -38,7 +38,8 @@ public class TripController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomResponse> getSingleTrip(@PathVariable(value = "id") UUID tripId) {
+    public ResponseEntity<CustomResponse> getSingleTrip(
+            @PathVariable(value = "id") UUID tripId) {
         Trip trip = tripRepository.findByConversationId(tripId);
         if (trip == null) {
             HashMap<String, String> response = new HashMap<>();
@@ -94,7 +95,8 @@ public class TripController {
     }
 
     @PostMapping("/{id}/start")
-    public ResponseEntity<CustomResponse> startTrip(@PathVariable(value = "id") UUID conversationId) {
+    public ResponseEntity<CustomResponse> startTrip(
+            @PathVariable(value = "id") UUID conversationId) {
 
         Trip foundTrip = tripRepository.findByConversationId(conversationId);
 
