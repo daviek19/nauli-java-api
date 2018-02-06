@@ -28,7 +28,6 @@ import rest.utils.responses.SuccessResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(path = "api/devices",
@@ -52,7 +51,8 @@ public class DeviceController {
 
     @GetMapping("/{id}")
     public @ResponseBody
-    ResponseEntity<CustomResponse> getDevice(@PathVariable(value = "id") UUID conversationId) {
+    ResponseEntity<CustomResponse> getDevice(
+            @PathVariable(value = "id") UUID conversationId) {
         Device device = deviceRepository.findByConversationId(conversationId);
         if (device == null) {
             HashMap<String, String> response = new HashMap<>();
@@ -82,7 +82,8 @@ public class DeviceController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CustomResponse> createDevice(@Valid @RequestBody Device device) {
+    public ResponseEntity<CustomResponse> createDevice(
+            @Valid @RequestBody Device device) {
 
         device.setConversationId(UUID.randomUUID());
         deviceRepository.save(device);
@@ -123,7 +124,8 @@ public class DeviceController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<CustomResponse> authenticate(@RequestBody Device device) {
+    public ResponseEntity<CustomResponse> authenticate(
+            @RequestBody Device device) {
 
         if (device.getDeviceName().isEmpty()) {
             return new ErrorResponse().send(HttpStatus.BAD_REQUEST, "Empty device name");
@@ -145,7 +147,9 @@ public class DeviceController {
     }
 
     @PostMapping("/{id}/trips")
-    public ResponseEntity<CustomResponse> createDeviceTrip(@Valid @RequestBody Trip trip, @PathVariable(value = "id") UUID conversationId) {
+    public ResponseEntity<CustomResponse> createDeviceTrip(
+            @Valid @RequestBody Trip trip,
+            @PathVariable(value = "id") UUID conversationId) {
 
         Device device = deviceRepository.findByConversationId(conversationId);
 
@@ -157,20 +161,19 @@ public class DeviceController {
         }
 
         trip.setConversationId(UUID.randomUUID());
-        trip.setTripReference(RandomStringUtils.random(6, true, true).toUpperCase());
+        trip.setTripReference(RandomStringUtils
+                .random(6, true, true)
+                .toUpperCase());
         trip.setTripStatus(0);
         trip.setDevice(device);
         tripRepository.save(trip);
-
-        HashMap<String, String> response = new HashMap<>();
-        response.put("conversationId", trip.getConversationId().toString());
-        response.put("timestamp", trip.getDateCreated().toString());
-
-        return new SuccessResponse(response).send(HttpStatus.OK);
+       
+        return new SuccessResponse(trip).send(HttpStatus.OK);
     }
 
     @GetMapping("/{id}/trips")
-    public ResponseEntity<CustomResponse> getAllDeviceTrips(@PathVariable(value = "id") UUID conversationId) {
+    public ResponseEntity<CustomResponse> getAllDeviceTrips(
+            @PathVariable(value = "id") UUID conversationId) {
         Device device = deviceRepository.findByConversationId(conversationId);
 
         if (device == null) {
@@ -184,7 +187,8 @@ public class DeviceController {
     }
 
     @GetMapping("/{id}/latest-trips")
-    public ResponseEntity<CustomResponse> getAllLatestDeviceTrips(@PathVariable(value = "id") UUID conversationId) {
+    public ResponseEntity<CustomResponse> getAllLatestDeviceTrips(
+            @PathVariable(value = "id") UUID conversationId) {
         Device device = deviceRepository.findByConversationId(conversationId);
 
         if (device == null) {
