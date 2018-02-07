@@ -109,20 +109,20 @@ public class TripController {
         }
 
         //ToDo Dont start trip when we have another ongoing one.       
-//        Iterable<Trip> onGoingTrips = tripRepository
-//                .findByTripStatusAndDevice(1, foundTrip.getDevice());
-//
-//        String ongoingError = "This trip could not be started. "
-//                + "Stop any ongoing trip first.";
-//        
-//        long ongoingTripsCount =  StreamSupport
-//                .stream(onGoingTrips.spliterator(), false)
-//                .count();
-//
-//        if (ongoingTripsCount >= 1) {
-//            return new ErrorResponse()
-//                    .send(HttpStatus.BAD_REQUEST, ongoingError);
-//        }
+        Iterable<Trip> onGoingTrips = tripRepository
+                .findByTripStatusAndDevice(1, foundTrip.getDevice());
+
+        String ongoingError = "This trip could not be started. "
+                + "Stop any ongoing trip first.";
+        
+        long ongoingTripsCount =  StreamSupport
+               .stream(onGoingTrips.spliterator(), false)
+                .count();
+
+        if (ongoingTripsCount >= 1) {
+            return new ErrorResponse()
+                    .send(HttpStatus.BAD_REQUEST, ongoingError);
+        }
 
         //Save the details
         foundTrip.setTripStatus(1);
